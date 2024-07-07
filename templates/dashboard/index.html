@@ -1,0 +1,121 @@
+{% extends 'partials/base.html' %}
+<!--  -->
+{% block title %}Home Page{% endblock %}
+<!--  -->
+{% block content %}
+<!--  -->
+{% if user.is_authenticated and user.is_superuser and user.is_staff %}
+<!--  -->
+{% include 'partials/topnav.html' %}
+<!-- Graphs -->
+<!-- DOUBLE BAR CHART -->
+<style>
+  .text {
+font-size: 1.2rem;
+}
+
+.heading2 {
+    font-size: 2rem;
+   
+  }
+.heading {
+    font-size: 2rem;
+    margin-top: 2rem;
+  }
+
+  @media (min-width: 320px) and (max-width: 748px) {
+    #myChart {
+      width: 100% !important;
+      height: auto !important;
+    }
+  }
+
+  @media (min-width: 748px) {
+    .my-div {
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+</style>
+<div  class="mt-5 container d-flex flex-column gap-5">
+  <h4 class="heading2">Summary</h4>
+  <p class="text">
+    The Inventory Management System Web Application, built with Django for the
+    backend and Bootstrap for the frontend, streamlines inventory tracking and
+    order management. Key features include user roles, allowing admins full
+    control while staff have limited access based on permissions. Admins can
+    manage products by adding, updating, and deleting them, with each product
+    having attributes like name, category, model number, and stock quantity. The
+    system supports order management for both admins and staff, detailing
+    product, category, model number, ordered quantity, date, and status.
+    Superusers automatically get order issuance permissions, while regular staff
+    can have these permissions granted by admins. Additional features include
+    search and filter options, Excel export functionality, important
+    notifications and alerts, and secure authentication to ensure user data
+    protection.
+  </p>
+  <hr style="width: 80%;" />
+  <h4 class="heading">User Roles and Permissions</h4>
+  <p class="text">
+    The system categorizes users into admins and staff. Admins have comprehensive control over the system, while staff access is limited to specific permissions. This hierarchical structure ensures that only authorized personnel can make critical changes, enhancing security and accountability.
+  </p>
+  <h4 class="heading">Product Management</h4>
+  <p class="text">
+    Admins can efficiently manage the product catalog. The system allows adding new products, updating existing ones, and deleting outdated or unnecessary items. Each product entry includes essential details such as the product name, category, model number, and current stock levels.
+  </p>
+  <h4 class="heading">Order Management</h4>
+  <p class="text">
+    Both admins and staff can place and track orders. The order management feature includes detailed information about each order, such as the product, category, model number, ordered quantity, order date, and current status. This feature ensures transparency and efficient handling of inventory.
+  </p>
+  <h4 class="heading">Additional Features</h4>
+  <p class="text">
+    The application includes advanced search and filter options, allowing users to quickly find specific products or orders. The Excel export functionality enables users to download order details for offline use or reporting purposes. Important notifications and alerts keep users informed about critical updates or low stock levels. The secure authentication mechanism ensures that all user data is protected and accessible only to authorized users.
+  </p>
+</div>
+  <!-- <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <div
+    align="center"
+    id="plotlyChart"
+    style="
+      width: 80%;
+      height: 50vh;
+      margin-left: auto;
+      margin-right: auto;
+      display: none;
+    "
+  ></div>
+</div>
+
+<script>
+  var data = [
+    {
+      x: [{% for product in products %}'{{ product.name }} -- {{ product.model_no }}',{% endfor %}],
+      y: [{% for product in products %}'{{ product.quantity }}',{% endfor %}],
+      type: 'bar',
+      name: 'Available Stock'
+    },
+    {
+      x: [{% for product in product_list %}'{{ product.name }}',{% endfor %}],
+      y: [{% for product in product_list %}'{{ product.quantity }}',{% endfor %}],
+      type: 'bar',
+      name: 'Total Quantity Ordered'
+    }
+  ];
+
+  var layout = {
+    title: 'Product Stock and Orders',
+    barmode: 'group'
+  };
+
+  Plotly.newPlot('plotlyChart', data, layout);
+</script> -->
+{% include 'partials/footer.html' %}
+
+  {% else %}
+  <!--   -->
+  {% include 'dashboard/staff_index.html' %}
+  <!--  -->
+  {% endif %}
+  <!--  -->
+  {% endblock %}
+</div>

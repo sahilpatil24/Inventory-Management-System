@@ -1,0 +1,83 @@
+<!-- {% extends 'partials/base.html' %} -->
+{% block title %}Profile Page{% endblock %}
+<!--  -->
+{% load crispy_forms_tags %}
+<!--  -->
+{% block content %}
+<style>
+  .btn-dark-color {
+    color: white;
+  }
+
+  .btn-dark-color {
+    background-color: #122b4e;
+  }
+
+  .btn-dark-color:hover {
+    border: 1px solid #000;
+    transition: all 0.2s ease-in-out;
+    background-color: white;
+    color: #000;
+  }
+</style>
+
+<div class="container my-5">
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header dark-color text-white">Profile Page</div>
+        <div class="card-body">
+          <!-- <div class="row"> -->
+          <!-- <div class="col-md-8"> -->
+          <span class="h4">Profile Information</span>
+          <!-- <a class="btn btn-dark btn-sm text-white float-right">Edit</a> -->
+          <hr />
+          <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %} {{user_form | crispy}} {{profile_form|crispy}}
+            <div class="text-center">
+              <input
+                class="btn btn-dark-color mr-auto ml-auto"
+                type="submit"
+                value="Submit"
+              />
+            </div>
+          </form>
+          <!-- <table class="table bg-white table-borderless">
+                <tbody>
+                  <tr>
+                    <th scope="row">Name</th>
+                    <td>Mark</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Email</th>
+                    <td>mark123@gmail.com</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Phone</th>
+                    <td>7039019360</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Address</th>
+                    <td>House No.22, Spenta Apartments, Pablo Street</td>
+                  </tr>
+                </tbody>
+              </table> -->
+        </div>
+
+        <!-- <img
+                style="border-radius: 50%"
+                class="img-thumbnail"
+                src="/assert/admin/img/media/profile-img2.jpg"
+                alt="Profile Image"
+              /> -->
+        <!-- </div> -->
+        <!-- </div> -->
+      </div>
+    </div>
+  </div>
+</div>
+<!--  -->
+{% include '../partials/footer.html' %}
+<!--  -->
+{% endblock %}

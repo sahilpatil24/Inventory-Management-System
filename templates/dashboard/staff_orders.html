@@ -1,0 +1,101 @@
+{% extends 'partials/base.html' %}
+
+<!--  -->
+{% block title %}Order Page{% endblock %}
+
+<!--  -->
+{% block content %}
+
+<!-- Table -->
+<div class="container my-5">
+  <div class="row">
+    <!-- <div class="col-md-4"></div> -->
+    <div style="width: 100%" class="mt-4">
+      
+      <a href="{% url 'export-all-orders-admin' %}" class=""
+        >Click here to download All Orders as Excel</a
+      >
+      <div class="d-flex flex-row justify-content-between align-items-center">
+
+        <form method="get" action="{% url 'dashboard-order' %}" class="form-inline mb-3">
+          <select class="form-control mr-sm-2" name="search_type">
+          <option value="product_name">Product Name</option>
+          <option value="ordered_by">Ordered By</option>
+        </select>
+        <input class="form-control mr-sm-2" type="search" name="q" placeholder="Search" aria-label="Search" />
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+      <a href="{% url 'dashboard-order' %}">See all orders</a>
+    </div>
+
+    {% if messages %}
+    <div class="row">
+      <div class="col-md-12">
+        {% for message in messages %}
+        <div
+          class="alert alert-{{message.tags}} alert-dismissible fade show"
+          role="alert"
+        >
+          {{ message }}
+          <button
+            type="button"
+            class="close"
+            data-dismiss="alert"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+      <table class="table bg-white">
+        <thead class="dark-color text-white">
+          <tr>
+            <!-- <th scope="col">#</th> -->
+            <th scope="col">Product Name</th>
+            <th scope="col">Category</th>
+            <th scope="col">Available Stock</th>
+            <th scope="col">Ordered Quantity</th>
+            <th scope="col">Model No</th>
+            <th scope="col">Order By</th>
+            <th scope="col">Order Date</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in orders %}
+          <tr>
+            <!-- <th scope="row"><a class="btn btn-info btn-sm">View</a></th> -->
+            <td>{{order.product.name}}</td>
+            <td>{{order.product.category}}</td>
+            <td>{{order.product.quantity}}</td>
+            <td>{{order.order_quantity}}</td>
+            <td>{{order.product.model_no}}</td>
+            <td>{{order.staff.username}}</td>
+            <td>{{order.date}}</td>
+            <td><form class="d-flex flex-row justify-content-between" method="post" action="{% url 'update_order_status' order.id %}">
+              {% csrf_token %}
+              <select style="margin-right: 10px;" name="status">
+                  <option value="Issued" 
+                  {% if order.status == 'Issued' %}
+                    selected 
+                  {% endif %}
+                  >Issued</option>
+                  <option value="Not Issued" {% if order.status == 'Not Issued' %}selected{% endif %}>Not Issued</option>
+              </select>
+              
+              <button type="submit" class="btn btn-primary btn-sm">Update</button>
+          </form></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      
+    </div>
+  </div>
+</div>
+
+<!-- End of Table -->
+{% endblock %}

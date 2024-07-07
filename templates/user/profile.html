@@ -1,0 +1,74 @@
+{% extends 'partials/base.html' %} {% block title %}Profile Page{% endblock %}
+{%block content%}
+<style>
+  .btn-dark-color {
+    color: white;
+  }
+
+  .btn-dark-color {
+    background-color: #122b4e;
+  }
+
+  .btn-dark-color:hover {
+    border: 1px solid #000;
+    transition: all 0.2s ease-in-out;
+    background-color: white;
+    color: #000;
+  }
+</style>
+
+<div class="container my-5">
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header dark-color text-white">Profile Page</div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-8">
+              <span class="h4">Profile Information</span>
+              <a
+                href="{% url 'user-profile-update' %}"
+                class="btn btn-dark-color btn-sm float-right"
+                >Edit</a
+              >
+              <hr />
+              <table class="table bg-white table-borderless">
+                <tbody>
+                  <tr>
+                    <th scope="row">Name</th>
+                    <td>{{user.username}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Email</th>
+                    <td>{{user.email}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Phone</th>
+                    <td>{{user.profile.phone}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Address</th>
+                    <td>{{user.profile.address}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-md-4">
+              <img
+                style="border-radius: 50%"
+                class="img-thumbnail"
+                src="{{user.profile.image.url }}"
+                alt="Profile Image"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="position-absolute fixed-bottom">
+  {% include '../partials/footer.html' %}
+</div>
+{% endblock %}

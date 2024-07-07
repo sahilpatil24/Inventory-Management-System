@@ -1,0 +1,155 @@
+{% extends 'partials/base.html' %} {% block title %}Product Page{% endblock %}
+{% load crispy_forms_tags %}
+<!--  -->
+{% block content %} {% include 'partials/topnav.html' %}
+
+<!-- Table -->
+<div class="container my-5">
+  <div class="flex-container-2">
+    <div class="col-md-4">
+      {% if messages %}
+      <div class="row mt-4">
+        <div class="col-md-12">
+          {% for message in messages %}
+          <div
+            class="alert alert-{{message.tags}} alert-dismissible fade show"
+            role="alert"
+          >
+            {{ message }}
+            <button
+              type="button"
+              class="close"
+              data-dismiss="alert"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+      <div class="border bg-white p-3">
+        <h4>Add Products</h4>
+        <hr />
+        <form method="POST">
+          {% csrf_token %}
+          <!-- {{form}} -->
+          {{form|crispy}}
+          <!-- <label for="name" class="form-label">Name</label><br />
+          <input
+          style="width: 100%"
+            id="name"
+            type="text"
+            class="mb-2 form-control"
+            value=""
+            placeholder="John Doe"
+          />
+          <label for="quantity" class="form-label">Quantity</label><br />
+          <input
+            style="width: 100%"
+            type="quantity"
+            id="quantity"
+            class="mb-4 form-control"
+            value=""
+            placeholder="john@123"
+          />
+          <div class="form-group">
+            <label for="category">Category</label>
+            <select name="" class="form-control" id="category">
+              <option selected>Choose--</option>
+              <option value="">...</option>
+            </select>
+          </div>
+          -->
+          <input
+            class="btn btn-success btn-block"
+            type="submit"
+            value="Add product"
+          />
+        </form>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="d-flex flex-row justify-content-between align-items-center">
+        <form
+          method="get"
+          action="{% url 'dashboard-product-list' %}"
+          class="form-inline mb-3"
+        >
+          <select class="form-control mr-sm-2" name="search_type">
+            <option value="name">Name</option>
+            <option value="model_no">Model Number</option>
+          </select>
+          <input
+            class="form-control mr-sm-2"
+            type="search"
+            name="q"
+            placeholder="Search"
+            aria-label="Search"
+          />
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+            Search
+          </button>
+        </form>
+        <a href="{% url 'dashboard-product' %}">See all products</a>
+      </div>
+      <a href="{% url 'export-all-products' %}">Get Product List as Excel</a>
+      <table class="table bg-white">
+        <thead class="dark-color text-white">
+          <tr>
+            <!-- <th scope="col">#</th> -->
+            <th scope="col">Name</th>
+            <th scope="col">Category</th>
+            <th scope="col">Model</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Activity</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in items %}
+          <tr>
+            <!-- <th scope="row"><a class="btn btn-info btn-sm">View</a></th> -->
+            <!-- <th scope="row">1</th> -->
+            <td>{{item.name}}</td>
+            <td>{{item.category}}</td>
+            <td>{{item.model_no}}</td>
+            <td>{{item.quantity}}</td>
+            <td>
+              <a
+                class="btn btn-info btn-sm"
+                href="{% url 'dashboard-product-update' item.id %}"
+                >Edit</a
+              >
+              <a
+                class="btn btn-danger btn-sm"
+                href="{% url 'dashboard-product-delete' item.id %}"
+                >Delete</a
+              >
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<style>
+  .flex-container-2 {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+  }
+
+  @media (max-width: 425px) {
+    .flex-container-2 {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+  }
+</style>
+<!-- End of Table -->
+{% include '../partials/footer.html' %}
+<!--  -->
+{% endblock %}

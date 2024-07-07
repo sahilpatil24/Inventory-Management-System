@@ -1,0 +1,193 @@
+{% load crispy_forms_tags %}
+<style>
+  .btn-dark-color {
+    color: white;
+  }
+
+  .btn-dark-color {
+    background-color: #122b4e;
+  }
+
+  .btn-dark-color:hover {
+    border: 1px solid #000;
+    transition: all 0.2s ease-in-out;
+    background-color: white;
+    color: #000;
+  }
+</style>
+
+<div class="container">
+
+
+  {% if messages %}
+  <div class="row mt-4">
+    <div class="col-md-12">
+      {% for message in messages %}
+      
+      
+      <div
+      {% if 'error' in message.tags %}
+      class="alert  alert-danger alert-dismissible fade show"
+      {% endif %}
+        class="alert alert-{{message.tags}} alert-dismissible fade show"
+        role="alert"
+      >
+        {{ message }}
+        <button
+          type="button"
+          class="close"
+          data-dismiss="alert"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="mt-4 row">
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header nav-element dark-color text-white">
+          Make Request
+        </div>
+        <div class="card-body">
+          <form method="POST" action="">
+            {{ form|crispy }} {% csrf_token %}
+            <input
+              class="btn btn-block btn-dark-color"
+              type="submit"
+              value="Make Request"
+            />
+          </form>
+          <p id="productStock" style="margin-top: 10px">Stock:</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header nav-element">Orders Records</div>
+        {% if user.profile.issue_permission == 'Yes' %}
+          <a href="{% url 'dashboard-order' %}">Access Records</a>
+        {% else %}
+        <div class="card-body">
+          <!-- <p>These are the orders of last 5 days.</p> -->
+
+          <!-- Search Form -->
+          <div
+            class="d-flex flex-row justify-content-between align-items-center"
+          >
+            <form
+              method="get"
+              action="{% url 'dashboard-index' %}"
+              class="form-inline mb-3"
+            >
+              <select class="form-control mr-sm-2" name="search_type">
+                <option value="product_name">Product Name</option>
+                <option value="model_no">Model Number</option>
+              </select>
+              <input
+                class="form-control mr-sm-2"
+                type="search"
+                name="q"
+                placeholder="Search"
+                aria-label="Search"
+              />
+              <button
+                class="btn btn-outline-success my-2 my-sm-0"
+                type="submit"
+              >
+                Search
+              </button>
+            </form>
+            <a href="{% url 'dashboard-index' %}">See all orders</a>
+          </div>
+
+          <a href="{% url 'export-all-orders-user' %}" class="mt-4"
+            >Click here to download All Orders as Excel</a
+          >
+          <table class="table bg-white">
+            <thead class="dark-color text-white">
+              <tr>
+                <th scope="col">Product</th>
+                <th scope="col">Category</th>
+                <th scope="col">Model_no</th>
+                <th scope="col">Total Stock</th>
+                <th scope="col">Ordered Quantity</th>
+                <th scope="col">Date</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for order in orders %} {% if order.staff == user %}
+              <tr>
+                <td>{{ order.product.name }}</td>
+                <td>{{ order.product.category }}</td>
+                <td>{{ order.model_no }}</td>
+                <td>{{ order.product.quantity }}</td>
+                <td>{{ order.order_quantity }}</td>
+                <td>{{ order.date }}</td>
+                <td>
+                  {% if user.profile.issue_permission == 'Yes' %}
+                  <form method="post" action="{% url 'update_order_status' order.id %}">
+                    {% csrf_token %}
+                    <select name="status">
+                      <option value="Issued" {% if order.status == 'Issued' %}selected{% endif %}>Issued</option>
+                      <option value="Not Issued" {% if order.status == 'Not Issued' %}selected{% endif %}>Not Issued</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                  </form>
+                  {% else %}
+                  {{ order.status }}
+                  {% endif %}
+                </td>
+              </tr>
+              {% endif %} {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const productField = document.getElementById("id_product");
+    const modelNoField = document.getElementById("id_model_no");
+    const productStockDiv = document.getElementById("productStock");
+
+    productField.addEventListener("change", function () {
+      const productId = productField.value;
+
+      fetch(`/get-product-details/?product_id=${productId}`)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.valid) {
+            modelNoField.value = data.model_no;
+            productStockDiv.textContent = `Stock: ${data.product_stock}`;
+          } else {
+            alert("Invalid Product");
+            modelNoField.value = "";
+            productStockDiv.textContent = "";
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          alert("An error occurred. Please try again.");
+        });
+    });
+  });
+</script>
+{% if user.profile.issue_permission == 'Yes' %}
+<div class="position-absolute fixed-bottom">
+  {% include '../partials/footer.html' %}
+</div>
+{% else %} 
+<!--  -->
+{% include '../partials/footer.html' %}
+<!--  -->
+{% endif %}

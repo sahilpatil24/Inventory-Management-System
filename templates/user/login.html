@@ -1,0 +1,56 @@
+{% extends 'partials/base.html' %}
+<!-- -->
+{% block title%} Login Page {% endblock %}
+<!-- -->
+{% load crispy_forms_tags %}
+<!-- -->
+{% block content %}
+
+<style>
+  .btn-dark-color {
+    color: white;
+  }
+
+  .btn-dark-color {
+    background-color: #122b4e;
+  }
+
+  .btn-dark-color:hover {
+    border: 1px solid #000;
+    transition: all 0.2s ease-in-out;
+    background-color: white;
+    color: #000;
+  }
+
+  .btn:hover {
+    background-color: white;
+    transition: all 0.3s;
+    color: black;
+  }
+</style>
+<div class="container">
+  <div class="mt-5">
+    <div class="col-md-6 mr-auto ml-auto">
+      {% for message in messages %}
+      <!--  -->
+      {% if message.message != 'User issue permission updated successfully.' %}
+      <div class="alert alert-{{message.tags}}">{{message}}</div>
+      {% endif %} {% endfor %}
+      <div style="border-radius: 1rem" class="border bg-white px-5 py-5">
+        <h3>Login</h3>
+        <hr />
+        <form method="POST" action="">
+          {% csrf_token %} {{form | crispy}}
+          <a href="{% url 'password_reset' %}">Forgot Password</a>
+          <hr />
+          <input
+            class="btn btn-dark-color px-3 py-2"
+            type="submit"
+            value="Login"
+          />
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

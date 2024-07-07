@@ -1,0 +1,54 @@
+{% include 'partials/nav.html' %}
+<!--  -->
+
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+      integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+      crossorigin="anonymous"
+    />
+    <style>
+      .btn-dark-color {
+        color: white;
+      }
+
+      .btn-dark-color {
+        background-color: #122b4e;
+      }
+
+      .btn-dark-color:hover {
+        border: 1px solid #000;
+        transition: all 0.2s ease-in-out;
+        background-color: white;
+        color: #000;
+      }
+    </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Message</title>
+  </head>
+  <body>
+    <form
+      style="margin-top: 5%; border-radius: 1rem"
+      class="col-md-3 border mx-auto px-5 py-5"
+      method="POST"
+      action=""
+    >
+      <h3 class="">Edit Message</h3>
+      {% csrf_token %} {{ form | crispy}}
+      <div align="center">
+        <input
+          class="btn btn-dark-color px-3 py-2 mx-auto"
+          type="submit"
+          value="Submit"
+        />
+      </div>
+    </form>
+  </body>
+</html>

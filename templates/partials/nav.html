@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="../../static/style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+      integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+      crossorigin="anonymous"
+    />
+    <style>
+      .nav-element {
+        font-size: 1.3rem;
+      }
+      .navbar-toggler {
+        color: white;
+      }
+
+      .dark-color {
+        background-color: #122b4e;
+      }
+      /* Extra small devices (phones, less than 768px) */
+      /* No media query since this is the default in Bootstrap */
+    </style>
+  </head>
+  <body>
+    <!-- Navbar  -->
+
+    <nav class="navbar navbar-expand-lg dark-color py-3">
+      {% if user.is_authenticated %}
+      <div class="container">
+        <a class="navbar-brand text-white" href="{% url 'dashboard-index' %}">
+          <h3>MyInventory</h3>
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- <div class="d-flex flex-row justify-content-between"> -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a
+                class="nav-link text-white nav-element"
+                href="{% url 'dashboard-index' %}"
+              >
+                Dashboard <span class="sr-only">(current)</span></a
+              >
+            </li>
+            <li class="nav-item active">
+              <a
+                class="nav-link text-white nav-element"
+                href="{% url 'dashboard-information' %}"
+              >
+                Information <span class="sr-only">(current)</span></a
+              >
+            </li>
+          </ul>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+              <a
+                class="nav-link text-white nav-element"
+                href="{% url 'user-profile' %}"
+                >{{user.username}} Profile
+                <span class="sr-only">(current)</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link text-white nav-element"
+                href="{% url 'user-logout' %}"
+                >Logout</a
+              >
+            </li>
+          </ul>
+        </div>
+        {% else %}
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+              <a
+                class="nav-link text-white nav-element"
+                href="{% url 'user-register' %}"
+                >Register <span class="sr-only">(current)</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link text-white nav-element"
+                href="{% url 'user-login' %}"
+                >Login</a
+              >
+            </li>
+          </ul>
+          {% endif %}
+        </div>
+        <!-- </div> -->
+      </div>
+    </nav>
+    <!-- End of Navbar -->
+  </body>
+</html>
